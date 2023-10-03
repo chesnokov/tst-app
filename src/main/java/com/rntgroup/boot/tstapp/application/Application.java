@@ -65,8 +65,8 @@ public class Application {
 	private void runTest(UserTest userTest)  {
 		int correctCount = 0;
 		for(Question question: userTest.getQuestions()) {
-			boolean questionResult = askQuestion(question);
-			if(questionResult) {
+			boolean questionCorrect = askQuestion(question);
+			if(questionCorrect) {
 				correctCount++;
 			}
 		}
