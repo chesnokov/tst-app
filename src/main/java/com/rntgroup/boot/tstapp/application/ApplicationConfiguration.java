@@ -1,6 +1,5 @@
 package com.rntgroup.boot.tstapp.application;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ConversionServiceFactoryBean;
@@ -12,7 +11,7 @@ import java.util.Set;
 @Configuration
 public class ApplicationConfiguration {
 	@Bean
-	public ConversionService conversionService(@Autowired Set<Converter> converters) {
+	public ConversionService conversionService(Set<Converter> converters) {
 		ConversionServiceFactoryBean factory = new ConversionServiceFactoryBean();
 		factory.setConverters(converters);
 		factory.afterPropertiesSet();
