@@ -1,5 +1,6 @@
 package com.rntgroup.boot.tstapp.application;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ConversionServiceFactoryBean;
@@ -16,5 +17,12 @@ public class ApplicationConfiguration {
 		factory.setConverters(converters);
 		factory.afterPropertiesSet();
 		return factory.getObject();
+	}
+
+	@Bean
+	public CommandLineRunner commandLineRunner(Application application) {
+		return args -> {
+			application.run();
+		};
 	}
 }
