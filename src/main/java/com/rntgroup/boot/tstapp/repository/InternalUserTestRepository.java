@@ -70,8 +70,8 @@ public class InternalUserTestRepository implements UserTestRepository {
 				JarEntry je = entries.nextElement();
 				if (je.getName().contains(userTestDir+"/") &&
 						je.getName().endsWith(userTestSuffix)) {
-					String filePath = je.getName().replaceAll("BOOT-INF/classes/", "");
-					tstFiles.add(makeUserTest(String.format("/%s",filePath)));
+					String filePath = je.getName().replaceAll("BOOT-INF/classes", "");
+					tstFiles.add(makeUserTest(filePath));
 				}
 			}
 		} catch (IOException e) {
