@@ -68,7 +68,7 @@ public class InternalUserTestRepository implements UserTestRepository {
 			Enumeration<JarEntry> entries = jf.entries();
 			while (entries.hasMoreElements()) {
 				JarEntry je = entries.nextElement();
-				if (je.getName().contains(userTestDir+"/") &&
+				if (je.getName().contains(String.format("%s/", userTestDir)) &&
 						je.getName().endsWith(userTestSuffix)) {
 					String filePath = je.getName().replaceAll("BOOT-INF/classes", "");
 					tstFiles.add(makeUserTest(filePath));
