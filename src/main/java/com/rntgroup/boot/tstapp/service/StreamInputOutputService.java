@@ -19,19 +19,17 @@ public class StreamInputOutputService implements InputOutputService {
 		this.out = out;
 	}
 
+	@Override
 	public void print(String str) {
 		out.print(str);
 	}
 
+	@Override
 	public void println(String str) {
 		out.println(str);
 	}
 
-	private String input() {
-		Scanner scanner = new Scanner(in);
-		return scanner.nextLine().trim();
-	}
-
+	@Override
 	public String getUserInput(String text) {
 		print(text);
 		return input();
@@ -45,5 +43,10 @@ public class StreamInputOutputService implements InputOutputService {
 		} catch(NumberFormatException e) {
 			return Optional.empty();
 		}
+	}
+
+	private String input() {
+		Scanner scanner = new Scanner(in);
+		return scanner.nextLine().trim();
 	}
 }
