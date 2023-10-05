@@ -19,23 +19,19 @@ public class StreamInputOutputService implements InputOutputService {
 		this.out = out;
 	}
 
-	@Override
 	public void print(String str) {
 		out.print(str);
 	}
 
-	@Override
 	public void println(String str) {
 		out.println(str);
 	}
 
-	@Override
 	public String getUserInput(String text) {
 		print(text);
 		return input();
 	}
 
-	@Override
 	public Optional<Integer> getUserInputAsInt(String text) {
 		print(text);
 		try {
