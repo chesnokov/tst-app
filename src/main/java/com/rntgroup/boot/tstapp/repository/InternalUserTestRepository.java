@@ -3,10 +3,7 @@ package com.rntgroup.boot.tstapp.repository;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import com.rntgroup.boot.tstapp.test.UserTest;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,19 +22,14 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
-@Component
-@Qualifier("UserTestRepositories")
-@Order(1)
+@Repository
 public class InternalUserTestRepository implements UserTestRepository {
-	private final String userTestDir;
-	private final String userTestSuffix;
+	private final InternalTestRepositoryConfig config;
 	private final CsvUserTestReader userTestReader;
 
-	public InternalUserTestRepository(@Value("${test.internal.dir}") String userTestDir,
-									  @Value("${test.suffix}") String userTestSuffix,
+	public InternalUserTestRepository(InternalTestRepositoryConfig internalTestRepositoryConfig,
 									  CsvUserTestReader userTestReader) {
-		this.userTestDir = userTestDir;
-		this.userTestSuffix = userTestSuffix;
+		this.config = internalTestRepositoryConfig;
 		this.userTestReader = userTestReader;
 	}
 
@@ -51,7 +43,7 @@ public class InternalUserTestRepository implements UserTestRepository {
 	}
 
 	private String getJarName() {
-		String resourceDirectory = String.format("/%s",userTestDir);
+		String resourceDirectory = String.format("/%s",config.getInternalDir());
 		URL resource = InternalUserTestRepository.class.getResource(resourceDirectory);
 		if(isNull(resource)) {
 			throw new UserTestRepositoryException(
@@ -68,8 +60,8 @@ public class InternalUserTestRepository implements UserTestRepository {
 			Enumeration<JarEntry> entries = jf.entries();
 			while (entries.hasMoreElements()) {
 				JarEntry je = entries.nextElement();
-				if (je.getName().contains(String.format("%s/", userTestDir)) &&
-						je.getName().endsWith(userTestSuffix)) {
+				if (je.getName().contains(String.format("%s/", config.getInternalDir())) &&
+						je.getName().endsWith(config.getSuffix())) {
 					String filePath = je.getName().replaceAll("BOOT-INF/classes", "");
 					tstFiles.add(makeUserTest(filePath));
 				}
@@ -81,7 +73,7 @@ public class InternalUserTestRepository implements UserTestRepository {
 	}
 
 	private List<UserTest> getUserTestsFromFileSystem() {
-		String resourceDirectory = String.format("/%s", userTestDir);
+		String resourceDirectory = String.format("/%s", config.getInternalDir());
 		URL resource = InternalUserTestRepository.class.getResource(resourceDirectory);
 		if(resource == null) {
 			throw new UserTestRepositoryException(MessageFormat.format("No directory {0} in application resource", resourceDirectory));
@@ -90,8 +82,8 @@ public class InternalUserTestRepository implements UserTestRepository {
 		File[] files = directory.listFiles();
 
 		return Arrays.stream(Optional.ofNullable(files).orElse(new File[0]))
-				.filter(f -> f.getName().endsWith(userTestSuffix))
-				.map(f -> String.format("/%s/%s", userTestDir,f.getName()))
+				.filter(f -> f.getName().endsWith(config.getSuffix()))
+				.map(f -> String.format("/%s/%s", config.getInternalDir(),f.getName()))
 				.map(this::makeUserTest)
 				.collect(Collectors.toList());
 	}

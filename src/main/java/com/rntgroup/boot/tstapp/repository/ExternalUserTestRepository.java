@@ -3,10 +3,7 @@ package com.rntgroup.boot.tstapp.repository;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import com.rntgroup.boot.tstapp.test.UserTest;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,28 +15,23 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
-@Qualifier("UserTestRepositories")
-@Order(2)
+@Repository
 public class ExternalUserTestRepository implements UserTestRepository {
-	private final String userTestDir;
-	private final String userTestSuffix;
+	private final ExternalTestRepositoryConfig config;
 	private final CsvUserTestReader userTestReader;
 
-	public ExternalUserTestRepository(@Value("${test.external.dir}") String userTestDir,
-									  @Value("${test.suffix}") String userTestSuffix,
+	public ExternalUserTestRepository(ExternalTestRepositoryConfig externalTestRepositoryConfig,
 									  CsvUserTestReader userTestReader) {
-		this.userTestDir = userTestDir;
-		this.userTestSuffix = userTestSuffix;
+		this.config = externalTestRepositoryConfig;
 		this.userTestReader = userTestReader;
 	}
 
 	public List<UserTest> findAll() throws UserTestRepositoryException {
-		File directory = new File(userTestDir);
+		File directory = new File(config.getExternalDir());
 		File[] files = directory.listFiles();
 
 		return Arrays.stream(Optional.ofNullable(files).orElse(new File[0]))
-				.filter(f -> f.getName().endsWith(userTestSuffix))
+				.filter(f -> f.getName().endsWith(config.getSuffix()))
 				.map(this::makeUserTest)
 				.collect(Collectors.toList());
 	}

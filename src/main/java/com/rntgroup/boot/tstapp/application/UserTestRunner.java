@@ -7,7 +7,6 @@ import com.rntgroup.boot.tstapp.service.UserTestResultService;
 import com.rntgroup.boot.tstapp.test.Question;
 import com.rntgroup.boot.tstapp.test.UserTest;
 import com.rntgroup.boot.tstapp.test.UserTestResult;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 
@@ -15,17 +14,17 @@ import java.text.MessageFormat;
 import java.util.List;
 
 @Component
-public class Application {
+public class UserTestRunner {
 	private final UserTestRepository repository;
 	private final InputOutputService ioService;
 	private final ConversionService conversionService;
 	private final UserTestResultService userTestResultService;
 
-	public Application(@Qualifier("CompositeUserTestRepository")UserTestRepository userTestRepository,
-					   InputOutputService ioService,
-					   ConversionService conversionService,
-					   UserTestResultService userTestResultService) {
-		this.repository = userTestRepository;
+	public UserTestRunner(UserTestRepository compositeUserTestRepository,
+						  InputOutputService ioService,
+						  ConversionService conversionService,
+						  UserTestResultService userTestResultService) {
+		this.repository = compositeUserTestRepository;
 		this.ioService = ioService;
 		this.conversionService = conversionService;
 		this.userTestResultService = userTestResultService;
@@ -50,7 +49,7 @@ public class Application {
 				runUserTest = false;
 			} else {
 				int index = Integer.parseInt(input);
-				if(index < 1 || index >= tests.size())  {
+				if(index < 1 || index > tests.size())  {
 					continue;
 				}
 				runTest(tests.get(index - 1));
@@ -82,7 +81,7 @@ public class Application {
 	}
 
 	private boolean isAnswerCorrect(Question question, int answerIndex) {
-		return answerIndex >= 1 && answerIndex < question.getAnswers().size() &&
+		return answerIndex >= 1 && answerIndex <= question.getAnswers().size() &&
 			question.getAnswers().get(answerIndex - 1).isCorrect();
 	}
 
