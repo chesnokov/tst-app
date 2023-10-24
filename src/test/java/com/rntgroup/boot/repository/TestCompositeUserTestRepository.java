@@ -1,18 +1,16 @@
-package com.rntgroup.boot.tstapp;
+package com.rntgroup.boot.repository;
 
+import com.rntgroup.boot.tstapp.application.CommandLineUserTestRunner;
 import com.rntgroup.boot.tstapp.repository.CompositeUserTestRepository;
 import com.rntgroup.boot.tstapp.repository.ExternalUserTestRepository;
 import com.rntgroup.boot.tstapp.repository.InternalUserTestRepository;
-import com.rntgroup.boot.tstapp.test.Answer;
-import com.rntgroup.boot.tstapp.test.Question;
 import com.rntgroup.boot.tstapp.test.UserTest;
+import com.rntgroup.boot.util.UserTestSupplier;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,8 +18,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@ActiveProfiles("test")
-@SpringBootTest
+@SpringBootTest(classes=com.rntgroup.boot.tstapp.UserTestApplication.class)
 public class TestCompositeUserTestRepository {
 	@Autowired
 	CompositeUserTestRepository compositeUserTestRepository;
@@ -29,20 +26,8 @@ public class TestCompositeUserTestRepository {
 	InternalUserTestRepository internalUserTestRepository;
 	@MockBean
 	ExternalUserTestRepository externalUserTestRepository;
-
-	private UserTest getUserTest() {
-		List<Question> expectedQuestions = new ArrayList<>();
-		List<Answer> answers1 = new ArrayList<>();
-		answers1.add(new Answer("Answer1", false));
-		answers1.add(new Answer("Answer2", true));
-		expectedQuestions.add(new Question("Question1", answers1));
-		List<Answer> answers2 = new ArrayList<>();
-		answers2.add(new Answer("Answer1", true));
-		answers2.add(new Answer("Answer2", false));
-		answers2.add(new Answer("Answer3", false));
-		expectedQuestions.add(new Question("Question2", answers2));
-		return new UserTest("testName", expectedQuestions);
-	}
+	@MockBean
+	CommandLineUserTestRunner commandLineUserTestRunner;
 
 	@Test
 	public void shouldReturnEmptyList() {
@@ -53,14 +38,14 @@ public class TestCompositeUserTestRepository {
 	@Test
 	public void shouldReturnCombinedListOfUserTests() {
 		when(internalUserTestRepository.findAll())
-				.thenReturn(Collections.singletonList(getUserTest()));
+				.thenReturn(Collections.singletonList(UserTestSupplier.getUserTest()));
 		when(externalUserTestRepository.findAll())
-				.thenReturn(Collections.singletonList(getUserTest()));
+				.thenReturn(Collections.singletonList(UserTestSupplier.getUserTest()));
 
 		List<UserTest> tests = compositeUserTestRepository.findAll();
 
 		assertThat(tests).usingRecursiveComparison()
-				.isEqualTo(Arrays.asList(getUserTest(), getUserTest()));
+				.isEqualTo(Arrays.asList(UserTestSupplier.getUserTest(), UserTestSupplier.getUserTest()));
 	}
 
 }

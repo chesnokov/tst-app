@@ -1,23 +1,19 @@
-package com.rntgroup.boot.tstapp;
+package com.rntgroup.boot.application;
 
+import com.rntgroup.boot.tstapp.application.CommandLineUserTestRunner;
 import com.rntgroup.boot.tstapp.application.UserTestRunner;
 import com.rntgroup.boot.tstapp.repository.CompositeUserTestRepository;
 import com.rntgroup.boot.tstapp.service.StreamInputOutputService;
 import com.rntgroup.boot.tstapp.service.UserTestResultService;
-import com.rntgroup.boot.tstapp.test.Answer;
-import com.rntgroup.boot.tstapp.test.Question;
-import com.rntgroup.boot.tstapp.test.UserTest;
 import com.rntgroup.boot.tstapp.test.UserTestResult;
+import com.rntgroup.boot.util.UserTestSupplier;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -25,10 +21,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ActiveProfiles("test")
-@SpringBootTest
+@SpringBootTest(classes=com.rntgroup.boot.tstapp.UserTestApplication.class)
 class TestUserTestRunner {
 
+	@MockBean
+	CommandLineUserTestRunner commandLineUserTestRunner;
 	@MockBean
 	CompositeUserTestRepository compositeUserTestRepository;
 	@MockBean
@@ -37,20 +34,6 @@ class TestUserTestRunner {
 	UserTestRunner runner;
 	@SpyBean
 	UserTestResultService userTestResultService;
-
-	private UserTest getUserTest() {
-		List<Question> expectedQuestions = new ArrayList<>();
-		List<Answer> answers1 = new ArrayList<>();
-		answers1.add(new Answer("Answer1", false));
-		answers1.add(new Answer("Answer2", true));
-		expectedQuestions.add(new Question("Question1", answers1));
-		List<Answer> answers2 = new ArrayList<>();
-		answers2.add(new Answer("Answer1", true));
-		answers2.add(new Answer("Answer2", false));
-		answers2.add(new Answer("Answer3", false));
-		expectedQuestions.add(new Question("Question2", answers2));
-		return new UserTest("testName", expectedQuestions);
-	}
 
 	@Test
 	void shouldFinishSilently() {
@@ -64,7 +47,7 @@ class TestUserTestRunner {
 	@Test
 	void shouldPassUserTest() {
 		when(compositeUserTestRepository.findAll())
-				.thenReturn(Collections.singletonList(getUserTest()));
+				.thenReturn(Collections.singletonList(UserTestSupplier.getUserTest()));
 		when(ioService.getUserInput(anyString()))
 				.thenReturn("1")
 				.thenReturn("q");
@@ -81,7 +64,7 @@ class TestUserTestRunner {
 	@Test
 	void shouldGetOneOfTwoResult() {
 		when(compositeUserTestRepository.findAll())
-				.thenReturn(Collections.singletonList(getUserTest()));
+				.thenReturn(Collections.singletonList(UserTestSupplier.getUserTest()));
 		when(ioService.getUserInput(anyString()))
 				.thenReturn("1")
 				.thenReturn("q");

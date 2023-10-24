@@ -1,4 +1,4 @@
-package com.rntgroup.boot.tstapp.repository;
+package com.rntgroup.boot.tstapp.repository.config;
 
 import lombok.Getter;
 import lombok.Setter;
