@@ -1,11 +1,10 @@
 package com.rntgroup.boot.repository;
 
-import com.rntgroup.boot.tstapp.application.CommandLineUserTestRunner;
 import com.rntgroup.boot.tstapp.repository.CompositeUserTestRepository;
 import com.rntgroup.boot.tstapp.repository.ExternalUserTestRepository;
 import com.rntgroup.boot.tstapp.repository.InternalUserTestRepository;
 import com.rntgroup.boot.tstapp.test.UserTest;
-import com.rntgroup.boot.util.UserTestSupplier;
+import com.rntgroup.boot.util.UserTestUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +17,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes=com.rntgroup.boot.tstapp.UserTestApplication.class)
+@SpringBootTest(classes=CompositeUserTestRepository.class)
 public class TestCompositeUserTestRepository {
 	@Autowired
 	CompositeUserTestRepository compositeUserTestRepository;
@@ -26,8 +25,6 @@ public class TestCompositeUserTestRepository {
 	InternalUserTestRepository internalUserTestRepository;
 	@MockBean
 	ExternalUserTestRepository externalUserTestRepository;
-	@MockBean
-	CommandLineUserTestRunner commandLineUserTestRunner;
 
 	@Test
 	public void shouldReturnEmptyList() {
@@ -38,14 +35,14 @@ public class TestCompositeUserTestRepository {
 	@Test
 	public void shouldReturnCombinedListOfUserTests() {
 		when(internalUserTestRepository.findAll())
-				.thenReturn(Collections.singletonList(UserTestSupplier.getUserTest()));
+				.thenReturn(Collections.singletonList(UserTestUtil.getUserTest()));
 		when(externalUserTestRepository.findAll())
-				.thenReturn(Collections.singletonList(UserTestSupplier.getUserTest()));
+				.thenReturn(Collections.singletonList(UserTestUtil.getUserTest()));
 
 		List<UserTest> tests = compositeUserTestRepository.findAll();
 
 		assertThat(tests).usingRecursiveComparison()
-				.isEqualTo(Arrays.asList(UserTestSupplier.getUserTest(), UserTestSupplier.getUserTest()));
+				.isEqualTo(Arrays.asList(UserTestUtil.getUserTest(), UserTestUtil.getUserTest()));
 	}
 
 }

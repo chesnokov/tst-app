@@ -4,7 +4,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import com.rntgroup.boot.tstapp.repository.CsvUserTestReader;
 import com.rntgroup.boot.tstapp.test.UserTest;
-import com.rntgroup.boot.util.UserTestSupplier;
+import com.rntgroup.boot.util.UserTestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +36,7 @@ public class TestCsvUserTestReader {
 	@Test
 	public void shouldMakeUserTest() throws IOException, CsvValidationException {
 
-		UserTest expectedUserTest = UserTestSupplier.getUserTest();
+		UserTest expectedUserTest = UserTestUtil.getUserTest();
 
 		try(CSVReader reader = new CSVReader(new InputStreamReader(TestCsvUserTestReader.class.getResourceAsStream("/test1.csv")))) {
 			UserTest userTest = userTestReader.makeUserTest("testName", reader);

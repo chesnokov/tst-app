@@ -1,17 +1,16 @@
 package com.rntgroup.boot.application;
 
-import com.rntgroup.boot.tstapp.application.CommandLineUserTestRunner;
 import com.rntgroup.boot.tstapp.application.UserTestRunner;
 import com.rntgroup.boot.tstapp.repository.CompositeUserTestRepository;
 import com.rntgroup.boot.tstapp.service.StreamInputOutputService;
 import com.rntgroup.boot.tstapp.service.UserTestResultService;
 import com.rntgroup.boot.tstapp.test.UserTestResult;
-import com.rntgroup.boot.util.UserTestSupplier;
+import com.rntgroup.boot.util.UserTestUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.core.convert.ConversionService;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -21,19 +20,19 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes=com.rntgroup.boot.tstapp.UserTestApplication.class)
+@SpringBootTest(classes=UserTestRunner.class)
 class TestUserTestRunner {
 
-	@MockBean
-	CommandLineUserTestRunner commandLineUserTestRunner;
 	@MockBean
 	CompositeUserTestRepository compositeUserTestRepository;
 	@MockBean
 	StreamInputOutputService ioService;
 	@Autowired
 	UserTestRunner runner;
-	@SpyBean
+	@MockBean
 	UserTestResultService userTestResultService;
+	@MockBean
+	ConversionService conversionService;
 
 	@Test
 	void shouldFinishSilently() {
@@ -47,7 +46,7 @@ class TestUserTestRunner {
 	@Test
 	void shouldPassUserTest() {
 		when(compositeUserTestRepository.findAll())
-				.thenReturn(Collections.singletonList(UserTestSupplier.getUserTest()));
+				.thenReturn(Collections.singletonList(UserTestUtil.getUserTest()));
 		when(ioService.getUserInput(anyString()))
 				.thenReturn("1")
 				.thenReturn("q");
@@ -64,7 +63,7 @@ class TestUserTestRunner {
 	@Test
 	void shouldGetOneOfTwoResult() {
 		when(compositeUserTestRepository.findAll())
-				.thenReturn(Collections.singletonList(UserTestSupplier.getUserTest()));
+				.thenReturn(Collections.singletonList(UserTestUtil.getUserTest()));
 		when(ioService.getUserInput(anyString()))
 				.thenReturn("1")
 				.thenReturn("q");

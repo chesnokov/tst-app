@@ -7,7 +7,7 @@ import com.rntgroup.boot.tstapp.test.UserTest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserTestSupplier {
+public class UserTestUtil {
 	public static UserTest getUserTest() {
 		List<Question> expectedQuestions = new ArrayList<>();
 		List<Answer> answers1 = new ArrayList<>();
