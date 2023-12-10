@@ -15,7 +15,7 @@ public class SqlUserTestResultRepository implements UserTestResultRepository {
 	private static final String FIND_ALL_TEST_RESULT = "select re_id, ex_name, correct_count, ans_count" +
 			" from result";
 	private static final String INSERT_TEST_RESULT = "insert into result " +
-			"(ex_name, correct_count, ans_count)" +
+			"(ex_name, correct_count, ans_count) " +
 			"values(:testName, :correctAnswers, :answersCount)";
 
 	@Autowired
