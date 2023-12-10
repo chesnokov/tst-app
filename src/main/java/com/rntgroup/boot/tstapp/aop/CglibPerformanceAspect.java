@@ -25,11 +25,13 @@ public class CglibPerformanceAspect implements BeanPostProcessor {
 			enhancer.setCallback((MethodInterceptor)(obj, method, args, proxy) ->{
 				long startTime = System.currentTimeMillis();
 				try {
-					Method originalMethod = bean.getClass().getMethod(method.getName(), method.getParameterTypes());
+					Method originalMethod = bean.getClass().getMethod(method.getName(),
+							method.getParameterTypes());
 					return originalMethod.invoke(bean, args);
 				} finally {
 					long workTime = System.currentTimeMillis() - startTime;
-					log.info(MessageFormat.format("{0}.{1} worked {2} ms",bean.getClass().getName(), method.getName(), workTime));
+					log.info(MessageFormat.format("{0}.{1} worked {2} ms",
+							bean.getClass().getName(), method.getName(), workTime));
 				}
 			});
 			return enhancer.create();

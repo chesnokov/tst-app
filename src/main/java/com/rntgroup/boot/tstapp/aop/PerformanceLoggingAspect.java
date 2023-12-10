@@ -24,7 +24,9 @@ public class PerformanceLoggingAspect {
 			return joinPoint.proceed();
 		} finally {
 			long workTime = System.currentTimeMillis() - startTime;
-			log.info(MessageFormat.format("{0}.{1} worked {2} ms",joinPoint.getTarget().getClass().getName(), joinPoint.getSignature().getName(), workTime));
+			log.info(MessageFormat.format("{0}.{1} worked {2} ms",
+					joinPoint.getTarget().getClass().getName(),
+					joinPoint.getSignature().getName(), workTime));
 		}
 	}
 }
