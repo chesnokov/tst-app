@@ -1,10 +1,8 @@
-package com.rntgroup.boot.repository;
+package com.rntgroup.boot.tstapp.repository;
 
-import com.rntgroup.boot.tstapp.repository.CompositeUserTestRepository;
-import com.rntgroup.boot.tstapp.repository.ExternalUserTestRepository;
-import com.rntgroup.boot.tstapp.repository.InternalUserTestRepository;
+import com.rntgroup.boot.tstapp.application.CommandLineUserTestRunner;
 import com.rntgroup.boot.tstapp.test.UserTest;
-import com.rntgroup.boot.util.UserTestUtil;
+import com.rntgroup.boot.tstapp.util.UserTestUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,12 +17,16 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes=CompositeUserTestRepository.class)
 public class TestCompositeUserTestRepository {
+	@MockBean
+	CommandLineUserTestRunner runner;
 	@Autowired
 	CompositeUserTestRepository compositeUserTestRepository;
 	@MockBean
 	InternalUserTestRepository internalUserTestRepository;
 	@MockBean
 	ExternalUserTestRepository externalUserTestRepository;
+	@MockBean
+	SqlUserTestRepository sqlUserTestRepository;
 
 	@Test
 	public void shouldReturnEmptyList() {
@@ -38,11 +40,13 @@ public class TestCompositeUserTestRepository {
 				.thenReturn(Collections.singletonList(UserTestUtil.getUserTest()));
 		when(externalUserTestRepository.findAll())
 				.thenReturn(Collections.singletonList(UserTestUtil.getUserTest()));
+		when(sqlUserTestRepository.findAll())
+				.thenReturn(Collections.singletonList(UserTestUtil.getUserTest()));
 
 		List<UserTest> tests = compositeUserTestRepository.findAll();
 
 		assertThat(tests).usingRecursiveComparison()
-				.isEqualTo(Arrays.asList(UserTestUtil.getUserTest(), UserTestUtil.getUserTest()));
+				.isEqualTo(Arrays.asList(UserTestUtil.getUserTest(), UserTestUtil.getUserTest(), UserTestUtil.getUserTest()));
 	}
 
 }

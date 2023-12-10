@@ -1,5 +1,6 @@
 package com.rntgroup.boot.tstapp.application;
 
+import com.rntgroup.boot.tstapp.annotation.AspectJBenchmark;
 import com.rntgroup.boot.tstapp.repository.UserTestRepository;
 import com.rntgroup.boot.tstapp.repository.UserTestRepositoryException;
 import com.rntgroup.boot.tstapp.service.InputOutputService;
@@ -30,6 +31,7 @@ public class UserTestRunner {
 		this.userTestResultService = userTestResultService;
 	}
 
+	@AspectJBenchmark
 	public void run() {
 		try {
 			List<UserTest> tests = repository.findAll();

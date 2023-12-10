@@ -1,11 +1,10 @@
-package com.rntgroup.boot.application;
+package com.rntgroup.boot.tstapp.application;
 
-import com.rntgroup.boot.tstapp.application.UserTestRunner;
 import com.rntgroup.boot.tstapp.repository.CompositeUserTestRepository;
 import com.rntgroup.boot.tstapp.service.StreamInputOutputService;
 import com.rntgroup.boot.tstapp.service.UserTestResultService;
 import com.rntgroup.boot.tstapp.test.UserTestResult;
-import com.rntgroup.boot.util.UserTestUtil;
+import com.rntgroup.boot.tstapp.util.UserTestUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

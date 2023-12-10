@@ -8,7 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
+import javax.sql.DataSource;
 import java.util.Set;
 
 @Configuration
@@ -20,5 +23,14 @@ public class ApplicationConfiguration {
 		factory.setConverters(converters);
 		factory.afterPropertiesSet();
 		return factory.getObject();
+	}
+
+	DataSource dataSource() {
+		return new EmbeddedDatabaseBuilder()
+				.setType(EmbeddedDatabaseType.H2)
+				.addScript("schema.sql")
+				.addScripts("data.sql")
+				.setName("execises")
+				.build();
 	}
 }

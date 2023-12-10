@@ -2,6 +2,7 @@ package com.rntgroup.boot.tstapp.repository;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import com.rntgroup.boot.tstapp.annotation.AspectJBenchmark;
 import com.rntgroup.boot.tstapp.repository.config.InternalTestRepositoryConfig;
 import com.rntgroup.boot.tstapp.test.UserTest;
 import org.springframework.stereotype.Repository;
@@ -34,6 +35,7 @@ public class InternalUserTestRepository implements UserTestRepository {
 		this.userTestReader = userTestReader;
 	}
 
+	@AspectJBenchmark
 	public List<UserTest> findAll() {
 		String jarName = getJarName();
 

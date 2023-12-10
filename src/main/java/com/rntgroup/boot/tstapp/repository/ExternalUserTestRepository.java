@@ -2,6 +2,7 @@ package com.rntgroup.boot.tstapp.repository;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import com.rntgroup.boot.tstapp.annotation.AspectJBenchmark;
 import com.rntgroup.boot.tstapp.repository.config.ExternalTestRepositoryConfig;
 import com.rntgroup.boot.tstapp.test.UserTest;
 import org.springframework.stereotype.Repository;
@@ -27,6 +28,7 @@ public class ExternalUserTestRepository implements UserTestRepository {
 		this.userTestReader = userTestReader;
 	}
 
+	@AspectJBenchmark
 	public List<UserTest> findAll() throws UserTestRepositoryException {
 		File directory = new File(config.getExternalDir());
 		File[] files = directory.listFiles();

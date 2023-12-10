@@ -1,10 +1,9 @@
-package com.rntgroup.boot.repository;
+package com.rntgroup.boot.tstapp.repository;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import com.rntgroup.boot.tstapp.repository.CsvUserTestReader;
 import com.rntgroup.boot.tstapp.test.UserTest;
-import com.rntgroup.boot.util.UserTestUtil;
+import com.rntgroup.boot.tstapp.util.UserTestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
