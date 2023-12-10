@@ -2,7 +2,7 @@ package com.rntgroup.boot.tstapp.repository;
 
 import com.rntgroup.boot.tstapp.test.UserTestResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
@@ -16,7 +16,7 @@ public class SqlUserTestResultRepository implements UserTestResultRepository {
 			" from result";
 	private static final String INSERT_TEST_RESULT = "insert into result " +
 			"(ex_name, correct_count, ans_count)" +
-			"values(:exName, :correctCount, :ansCount)";
+			"values(:testName, :correctAnswers, :answersCount)";
 
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -34,10 +34,7 @@ public class SqlUserTestResultRepository implements UserTestResultRepository {
 	@Override
 	public UserTestResult save(UserTestResult result) {
 		GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-		MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-		parameterSource.addValue("exName", result.getTestName());
-		parameterSource.addValue("correctCount", result.getCorrectAnswers());
-		parameterSource.addValue("ansCount", result.getAnswersCount());
+		BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(result);
 		namedParameterJdbcTemplate.update(INSERT_TEST_RESULT, parameterSource, generatedKeyHolder);
 		long resultId = generatedKeyHolder.getKey() != null ? generatedKeyHolder.getKey().longValue() : 0;
 		result.setId(resultId);
