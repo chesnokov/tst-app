@@ -16,3 +16,10 @@ create table if not exists answer (
     is_correct boolean,
     seq int not null
 );
+
+create table if not exists result (
+    re_id identity,
+    ex_name varchar(50) not null,
+    correct_count int not null,
+    ans_count int not null
+);

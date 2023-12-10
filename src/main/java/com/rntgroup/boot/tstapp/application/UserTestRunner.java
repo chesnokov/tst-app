@@ -57,6 +57,7 @@ public class UserTestRunner {
 				runTest(tests.get(index - 1));
 			}
 		}
+		userTestResultService.showAllResults();
 	}
 
 	private void listUserTests(List<UserTest> tests) {
