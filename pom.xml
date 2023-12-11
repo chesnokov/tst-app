@@ -70,6 +70,7 @@
 					<user>sa</user>
 					<password>password</password>
 					<url>jdbc:h2:/testdb</url>
+					<locations>filesystem:db/migration</locations>
 				</configuration>
 			</plugin>
 			<plugin>
