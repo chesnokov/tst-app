@@ -19,8 +19,8 @@ public class PerformanceMonitoringBeanPostProcessor implements BeanPostProcessor
 
 	@Lazy
 	public PerformanceMonitoringBeanPostProcessor(CglibCopyConstructorProxyWrapper copyConstructorProxyWrapper,
-												  CglibDefaultConstructorProxyWrapper defaultConstructorProxyWrapper,
-												  ProxyFactoryBeanWrapper proxyFactoryBeanWrapper) {
+			  CglibDefaultConstructorProxyWrapper defaultConstructorProxyWrapper,
+			  ProxyFactoryBeanWrapper proxyFactoryBeanWrapper) {
 		this.copyConstructorProxyWrapper = copyConstructorProxyWrapper;
 		this.defaultConstructorProxyWrapper = defaultConstructorProxyWrapper;
 		this.proxyFactoryBeanWrapper = proxyFactoryBeanWrapper;
