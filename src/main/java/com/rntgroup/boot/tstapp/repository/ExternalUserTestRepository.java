@@ -2,9 +2,10 @@ package com.rntgroup.boot.tstapp.repository;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import com.rntgroup.boot.tstapp.annotation.AspectJBenchmark;
+import com.rntgroup.boot.tstapp.annotation.BPPBenchmark;
 import com.rntgroup.boot.tstapp.repository.config.ExternalTestRepositoryConfig;
 import com.rntgroup.boot.tstapp.test.UserTest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
@@ -17,18 +18,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@BPPBenchmark
 @Repository
 public class ExternalUserTestRepository implements UserTestRepository {
 	private final ExternalTestRepositoryConfig config;
 	private final CsvUserTestReader userTestReader;
 
+	@Autowired
 	public ExternalUserTestRepository(ExternalTestRepositoryConfig externalTestRepositoryConfig,
 									  CsvUserTestReader userTestReader) {
 		this.config = externalTestRepositoryConfig;
 		this.userTestReader = userTestReader;
 	}
 
-	@AspectJBenchmark
+	public ExternalUserTestRepository(ExternalUserTestRepository other) {
+		this.config = other.config;
+		this.userTestReader = other.userTestReader;
+	}
+
 	public List<UserTest> findAll() throws UserTestRepositoryException {
 		File directory = new File(config.getExternalDir());
 		File[] files = directory.listFiles();

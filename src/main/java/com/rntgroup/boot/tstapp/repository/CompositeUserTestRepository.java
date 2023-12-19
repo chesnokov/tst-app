@@ -5,22 +5,34 @@ import com.rntgroup.boot.tstapp.test.UserTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @BPPBenchmark
 @Repository
 public class CompositeUserTestRepository implements UserTestRepository {
 
-	@Autowired
 	private List<UserTestRepository> repositories;
 
+	@Autowired
+	public CompositeUserTestRepository(List<UserTestRepository> repositories) {
+		this.repositories = repositories;
+	}
+
+	public CompositeUserTestRepository(CompositeUserTestRepository other) {
+		this.repositories = other.repositories;
+	}
+
 	public List<UserTest> findAll()  {
-		List<UserTest> userTests = new ArrayList<>();
-		for(UserTestRepository repository:repositories) {
-			userTests.addAll(repository.findAll());
-		}
-		return userTests;
+		anotherMethodToBeLoggedByCglibProxy();
+		return repositories.stream()
+				.map(UserTestRepository::findAll)
+				.flatMap(Collection::stream)
+				.collect(Collectors.toList());
+	}
+
+	public void anotherMethodToBeLoggedByCglibProxy() {
 	}
 
 }

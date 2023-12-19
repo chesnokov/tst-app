@@ -3,7 +3,7 @@ package com.rntgroup.boot.tstapp.application;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-@Component
+@Deprecated
 public class CommandLineUserTestRunner implements CommandLineRunner {
 	private final UserTestRunner userTestRunner;
 

@@ -9,12 +9,11 @@ import com.rntgroup.boot.tstapp.test.Question;
 import com.rntgroup.boot.tstapp.test.UserTest;
 import com.rntgroup.boot.tstapp.test.UserTestResult;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.List;
 
-@Component
+@Deprecated
 public class UserTestRunner {
 	private final UserTestRepository repository;
 	private final InputOutputService ioService;
@@ -57,7 +56,6 @@ public class UserTestRunner {
 				runTest(tests.get(index - 1));
 			}
 		}
-		userTestResultService.showAllResults();
 	}
 
 	private void listUserTests(List<UserTest> tests) {

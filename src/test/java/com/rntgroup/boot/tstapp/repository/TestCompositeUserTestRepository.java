@@ -1,5 +1,7 @@
 package com.rntgroup.boot.tstapp.repository;
 
+import com.rntgroup.boot.tstapp.proxy.CglibCopyConstructorProxyWrapper;
+import com.rntgroup.boot.tstapp.proxy.PerformanceMonitoringBeanPostProcessor;
 import com.rntgroup.boot.tstapp.application.CommandLineUserTestRunner;
 import com.rntgroup.boot.tstapp.test.UserTest;
 import com.rntgroup.boot.tstapp.util.UserTestUtil;
@@ -15,18 +17,16 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes=CompositeUserTestRepository.class)
+@SpringBootTest(classes={ CompositeUserTestRepository.class, PerformanceMonitoringBeanPostProcessor.class, CglibCopyConstructorProxyWrapper.class})
 public class TestCompositeUserTestRepository {
-	@MockBean
-	CommandLineUserTestRunner runner;
 	@Autowired
-	CompositeUserTestRepository compositeUserTestRepository;
+	private CompositeUserTestRepository compositeUserTestRepository;
 	@MockBean
-	InternalUserTestRepository internalUserTestRepository;
+	private InternalUserTestRepository internalUserTestRepository;
 	@MockBean
-	ExternalUserTestRepository externalUserTestRepository;
+	private ExternalUserTestRepository externalUserTestRepository;
 	@MockBean
-	SqlUserTestRepository sqlUserTestRepository;
+	private SqlUserTestRepository sqlUserTestRepository;
 
 	@Test
 	public void shouldReturnEmptyList() {

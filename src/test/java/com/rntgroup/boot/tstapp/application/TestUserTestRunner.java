@@ -19,19 +19,19 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes=UserTestRunner.class)
+@SpringBootTest(classes={UserTestRunner.class})
 class TestUserTestRunner {
 
 	@MockBean
-	CompositeUserTestRepository compositeUserTestRepository;
+	private CompositeUserTestRepository compositeUserTestRepository;
 	@MockBean
-	StreamInputOutputService ioService;
+	private StreamInputOutputService ioService;
 	@Autowired
-	UserTestRunner runner;
+	private UserTestRunner runner;
 	@MockBean
-	UserTestResultService userTestResultService;
+	private UserTestResultService userTestResultService;
 	@MockBean
-	ConversionService conversionService;
+	private ConversionService conversionService;
 
 	@Test
 	void shouldFinishSilently() {

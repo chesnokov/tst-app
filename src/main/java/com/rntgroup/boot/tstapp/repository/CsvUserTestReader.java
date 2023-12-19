@@ -21,7 +21,7 @@ public class CsvUserTestReader {
 			String questionText = values[0];
 			List<Answer> answers = new ArrayList<>();
 			for(int i=1; i<values.length-1; i+=2) {
-				Answer answer = new Answer(values[i], values[i+1].trim().equals("true"));
+				Answer answer = new Answer("",values[i], values[i+1].trim().equals("true"));
 				answers.add(answer);
 			}
 			questions.add(new Question(questionText, answers));
