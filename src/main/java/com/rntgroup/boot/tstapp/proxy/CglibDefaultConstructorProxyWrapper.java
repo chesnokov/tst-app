@@ -13,9 +13,9 @@ import java.text.MessageFormat;
 public class CglibDefaultConstructorProxyWrapper implements ProxyWrapper<MethodInterceptor> {
 	@Override
 	public Object getProxy(Object baseObject, MethodInterceptor methodIterceptor) {
-		Constructor<?> copyConstructor = getDefaultConstructor(baseObject);
+		Constructor<?> defaultConstructor = getDefaultConstructor(baseObject);
 
-		if(copyConstructor != null) {
+		if(defaultConstructor != null) {
 			return getProxyObjectWithDefaultConstructor(baseObject, methodIterceptor);
 		} else {
 			return baseObject;
