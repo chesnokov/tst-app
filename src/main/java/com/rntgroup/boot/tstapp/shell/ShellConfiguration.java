@@ -9,7 +9,8 @@ public class ShellConfiguration {
 
 	@Bean
 	CommandRegistration showTests(ShowTestsCommand showTestsCommand,
-								  ShellExceptionResolver shellExceptionResolver) {
+			ShellExceptionResolver shellExceptionResolver) {
+
 		return CommandRegistration.builder()
 				.command("show-tests")
 				.withAlias()
@@ -24,8 +25,9 @@ public class ShellConfiguration {
 
 	@Bean
 	CommandRegistration runTest(RunTestCommand runTestCommand,
-								RunTestAvailability runTestAvailability,
-								ShellExceptionResolver shellExceptionResolver) {
+			RunTestAvailability runTestAvailability,
+			ShellExceptionResolver shellExceptionResolver) {
+
 		return CommandRegistration.builder()
 				.command("run-test")
 				.withAlias()
@@ -41,8 +43,9 @@ public class ShellConfiguration {
 
 	@Bean
 	CommandRegistration answerQuestion(AnswerQuestionCommand answerQuestionCommand,
-									   AnswerQuestionAvailability answerQuestionAvailability,
-									   ShellExceptionResolver shellExceptionResolver) {
+			   AnswerQuestionAvailability answerQuestionAvailability,
+			   ShellExceptionResolver shellExceptionResolver) {
+
 		return CommandRegistration.builder()
 				.command("answer")
 				.withAlias()
