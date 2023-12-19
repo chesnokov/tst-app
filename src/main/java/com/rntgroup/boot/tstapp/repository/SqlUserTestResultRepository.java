@@ -22,10 +22,10 @@ public class SqlUserTestResultRepository implements UserTestResultRepository {
 	public List<UserTestResult> findAll() {
 		return namedParameterJdbcTemplate.query("select re_id, ex_name, correct_count, ans_count from result",
 				(rs, rowNum)->
-				new UserTestResult(rs.getLong(1),
-						rs.getString(2),
-						rs.getInt(3),
-						rs.getInt(4)));
+				new UserTestResult(rs.getLong("re_id"),
+						rs.getString("ex_name"),
+						rs.getInt("correct_count"),
+						rs.getInt("ans_count")));
 	}
 
 	@Transactional
