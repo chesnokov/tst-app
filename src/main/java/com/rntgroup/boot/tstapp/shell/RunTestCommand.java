@@ -6,7 +6,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.shell.command.CommandContext;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.function.Function;
 
@@ -26,7 +25,7 @@ public class RunTestCommand implements Function<CommandContext, String> {
 	public String apply(CommandContext commandContext) {
 		String[] args = commandContext.getRawArgs();
 		if(args.length < 1)
-			throw new ShellException("run-text <index> required", 2);
+			throw new ShellException("numeric <index> required", 2);
 
 		int testIndex = getTestIndex(args[0]);
 		UserTest userTest = getUserTest(testIndex);
@@ -38,15 +37,15 @@ public class RunTestCommand implements Function<CommandContext, String> {
 		try {
 			return Integer.parseInt(index);
 		} catch(NumberFormatException e) {
-			throw new ShellException(MessageFormat.format(
-				"Numeric index of test required '{0}' is not a number", index), e, 2);
+			throw new ShellException(String.format(
+				"'%s' is not a number, index of test required", index), e, 2);
 		}
 	}
 
 	private UserTest getUserTest(int index) {
 		List<UserTest> userTests = shellExecutionContext.getUserTests();
 		if(index < 1 || index > userTests.size()) {
-			throw new ShellException(MessageFormat.format("No user test with index {0}",
+			throw new ShellException(String.format("no user test with index %s",
 					index), 2);
 		}
 		return shellExecutionContext.getUserTests().get(index - 1);

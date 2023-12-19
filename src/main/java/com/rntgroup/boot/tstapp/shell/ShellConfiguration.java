@@ -51,7 +51,7 @@ public class ShellConfiguration {
 				.withAlias()
 					.command("a")
 				.and()
-				.description("<index> give answer with index")
+				.description("<index>,[index]... give answer with index")
 				.availability(answerQuestionAvailability)
 				.withTarget()
 					.function(answerQuestionCommand)

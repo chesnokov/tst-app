@@ -8,10 +8,10 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.shell.command.CommandContext;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 @Component
 public class AnswerQuestionCommand implements Function<CommandContext, String> {
@@ -52,30 +52,44 @@ public class AnswerQuestionCommand implements Function<CommandContext, String> {
 		return conversionService.convert(question, String.class);
 	}
 
-	private long getCorrectAnswersCountInUserInput(String[] args, List<Answer> answers) {
-		try {
-			return Arrays.stream(args)
-					.flatMap( s -> Arrays.stream(s.split(",")))
-					.map(s -> {
-						int idx = Integer.parseInt(s);
-						if (idx < 1 || idx > answers.size()) {
-							throw new ShellException(MessageFormat.format(
-									"no answer with specified index {0}", idx),2);
-						}
-						return answers.get(idx - 1).isCorrect();
-					})
-					.filter(a -> a).count();
-		} catch (NumberFormatException e) {
-			throw new ShellException("one or more answer indexes should be specified",2);
+	private void processCurrentQuestionAnswer(String [] args) {
+		if(args.length == 0) {
+			throw new ShellException("index or indexes of correct answers are required", 2);
+		}
+		long correctAnswers = shellExecutionContext.getCurrentQuestion().getCorrectAnswersCount();
+		List<Answer> answers = shellExecutionContext.getCurrentQuestionAnswers();
+		long correctCount = getCorrectAnswersCountInUserInput(args, answers);
+		long wrongCount = getWrongAnswersCountInUserInput(args, answers);
+		if(correctAnswers == correctCount && wrongCount == 0) {
+			shellExecutionContext.incrementCorrectAnswersCount();
 		}
 	}
 
-	private void processCurrentQuestionAnswer(String [] args) {
-		List<Answer> answers = shellExecutionContext.getCurrentQuestionAnswers();
-		long correctAnswers = shellExecutionContext.getCurrentQuestion().getCorrectAnswersCount();
-		long userCorrectAnswers = getCorrectAnswersCountInUserInput(args, answers);
-		if(correctAnswers == userCorrectAnswers) {
-			shellExecutionContext.incrementCorrectAnswersCount();
-		}
+	private long getCorrectAnswersCountInUserInput(String[] args, List<Answer> answers) {
+		return getAnswerCorrectnessStream(args, answers)
+				.filter(a -> a).count();
+	}
+
+	private long getWrongAnswersCountInUserInput(String[] args, List<Answer> answers) {
+		return getAnswerCorrectnessStream(args, answers)
+				.filter(a -> !a).count();
+	}
+
+	private Stream<Boolean> getAnswerCorrectnessStream(String[] args, List<Answer> answers) {
+		return Arrays.stream(args)
+				.flatMap( s -> Arrays.stream(s.split(",")))
+				.map(s -> {
+					try {
+						int idx = Integer.parseInt(s);
+						if (idx < 1 || idx > answers.size()) {
+							throw new ShellException(String.format(
+									"no answer with specified index '%s'", idx),2);
+						}
+						return answers.get(idx - 1).isCorrect();
+					} catch(NumberFormatException e) {
+						throw new ShellException(String.format(
+								"not a number '%s' specified as an answer index", s), 2);
+					}
+				});
 	}
 }
