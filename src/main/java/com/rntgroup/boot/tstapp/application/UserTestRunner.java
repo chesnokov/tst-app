@@ -10,8 +10,10 @@ import com.rntgroup.boot.tstapp.test.UserTest;
 import com.rntgroup.boot.tstapp.test.UserTestResult;
 import org.springframework.core.convert.ConversionService;
 
+import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.function.Supplier;
 
 @Deprecated
 public class UserTestRunner {
@@ -19,15 +21,18 @@ public class UserTestRunner {
 	private final InputOutputService ioService;
 	private final ConversionService conversionService;
 	private final UserTestResultService userTestResultService;
+	private final Supplier<Timestamp> timestampSupplier;
 
 	public UserTestRunner(UserTestRepository compositeUserTestRepository,
 						  InputOutputService ioService,
 						  ConversionService conversionService,
-						  UserTestResultService userTestResultService) {
+						  UserTestResultService userTestResultService,
+						  Supplier<Timestamp> timestampSupplier) {
 		this.repository = compositeUserTestRepository;
 		this.ioService = ioService;
 		this.conversionService = conversionService;
 		this.userTestResultService = userTestResultService;
+		this.timestampSupplier = timestampSupplier;
 	}
 
 	@AspectJBenchmark
@@ -71,7 +76,7 @@ public class UserTestRunner {
 			}
 		}
 		UserTestResult userTestResult = new UserTestResult(userTest.getName(),
-			correctCount, userTest.getQuestions().size());
+			correctCount, userTest.getQuestions().size(), timestampSupplier.get());
 		userTestResultService.processResult(userTestResult);
 	}
 

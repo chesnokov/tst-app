@@ -20,12 +20,13 @@ public class SqlUserTestResultRepository implements UserTestResultRepository {
 
 	@Override
 	public List<UserTestResult> findAll() {
-		return namedParameterJdbcTemplate.query("select re_id, ex_name, correct_count, ans_count from result",
+		return namedParameterJdbcTemplate.query("select re_id, ex_name, correct_count, ans_count, date_time from result",
 				(rs, rowNum)->
 				new UserTestResult(rs.getLong("re_id"),
 						rs.getString("ex_name"),
 						rs.getInt("correct_count"),
-						rs.getInt("ans_count")));
+						rs.getInt("ans_count"),
+						rs.getTimestamp("date_time")));
 	}
 
 	@Transactional
@@ -33,8 +34,8 @@ public class SqlUserTestResultRepository implements UserTestResultRepository {
 	public UserTestResult save(UserTestResult result) {
 		GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
-		namedParameterJdbcTemplate.update("insert into result (ex_name, correct_count, ans_count) " +
-						"values(:testName, :correctAnswers, :answersCount)",
+		namedParameterJdbcTemplate.update("insert into result (ex_name, correct_count, ans_count, date_time) " +
+						"values(:testName, :correctAnswers, :answersCount, :timestamp)",
 				new BeanPropertySqlParameterSource(result), generatedKeyHolder);
 
 		long resultId = generatedKeyHolder.getKey() != null ? generatedKeyHolder.getKey().longValue() : 0;

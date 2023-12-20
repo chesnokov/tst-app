@@ -2,6 +2,7 @@ package com.rntgroup.boot.tstapp.application;
 
 import com.rntgroup.boot.tstapp.repository.CompositeUserTestRepository;
 import com.rntgroup.boot.tstapp.service.StreamInputOutputService;
+import com.rntgroup.boot.tstapp.service.TimestampSupplier;
 import com.rntgroup.boot.tstapp.service.UserTestResultService;
 import com.rntgroup.boot.tstapp.test.UserTestResult;
 import com.rntgroup.boot.tstapp.util.UserTestUtil;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
 
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -21,7 +23,8 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes={UserTestRunner.class})
 class TestUserTestRunner {
-
+	@MockBean
+	private TimestampSupplier timestampSupplier;
 	@MockBean
 	private CompositeUserTestRepository compositeUserTestRepository;
 	@MockBean
@@ -52,11 +55,14 @@ class TestUserTestRunner {
 		when(ioService.getUserInputAsInt(anyString()))
 				.thenReturn(Optional.of(2))
 				.thenReturn(Optional.of(1));
+		when(timestampSupplier.get())
+				.thenReturn(new Timestamp(0));
 
 		runner.run();
 
 		verify(userTestResultService, times(1))
-				.processResult(new UserTestResult("testName", 2, 2));
+				.processResult(new UserTestResult("testName",
+						2, 2, timestampSupplier.get()));
 	}
 
 	@Test
@@ -69,11 +75,14 @@ class TestUserTestRunner {
 		when(ioService.getUserInputAsInt(anyString()))
 				.thenReturn(Optional.of(1))
 				.thenReturn(Optional.of(1));
+		when(timestampSupplier.get())
+				.thenReturn(new Timestamp(0));
 
 		runner.run();
 
 		verify(userTestResultService, times(1))
-				.processResult(new UserTestResult("testName", 1, 2));
+				.processResult(new UserTestResult("testName",
+						1, 2, timestampSupplier.get()));
 	}
 
 }

@@ -11,6 +11,6 @@ public class ShellExceptionResolver implements CommandExceptionResolver {
 		if(ex instanceof ShellException) {
 			return CommandHandlingResult.of(ex.getMessage() + '\n', ((ShellException) ex).getExitCode());
 		}
-		return CommandHandlingResult.of(ex.getMessage(),1);
+		throw new ShellException("unknown exception", ex, 1);
 	}
 }

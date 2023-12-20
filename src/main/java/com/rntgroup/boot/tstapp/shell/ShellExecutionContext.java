@@ -8,16 +8,23 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.function.Supplier;
 
 @Component
 @Getter
 @Setter
 public class ShellExecutionContext {
+	private final Supplier<Timestamp> timestampSupplier;
 	private List<UserTest> userTests;
 	private UserTest runningTest;
 	private int questionIndex;
 	private int correctAnswersCount;
+
+	public ShellExecutionContext(Supplier<Timestamp> timestampSupplier) {
+		this.timestampSupplier = timestampSupplier;
+	}
 
 	public List<Answer> getCurrentQuestionAnswers() {
 		List<Question> questions = runningTest.getQuestions();
@@ -60,6 +67,7 @@ public class ShellExecutionContext {
 		return new UserTestResult(
 				runningTest.getName(),
 				correctAnswersCount,
-				runningTest.getQuestions().size());
+				runningTest.getQuestions().size(),
+				timestampSupplier.get());
 	}
 }
