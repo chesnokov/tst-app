@@ -30,16 +30,16 @@ public class AnswerQuestionCommand implements Function<CommandContext, String> {
 
 	@Override
 	public String apply(CommandContext commandContext) {
-		processCurrentQuestionAnswer(commandContext.getRawArgs());
+		processCurrentQuestionAnswers(commandContext.getRawArgs());
 
 		if(shellExecutionContext.hasNextQuestion()) {
 			return getNextQuestionToShow();
 		} else {
-			return processUserTestResultAndFinishTest();
+			return getUserTestResultAndFinishTest();
 		}
 	}
 
-	private String processUserTestResultAndFinishTest() {
+	private String getUserTestResultAndFinishTest() {
 		UserTestResult userTestResult = shellExecutionContext.getUserTestResult();
 		userTestResultService.processResult(userTestResult);
 		String result = conversionService.convert(userTestResult, String.class);
@@ -52,7 +52,7 @@ public class AnswerQuestionCommand implements Function<CommandContext, String> {
 		return conversionService.convert(question, String.class);
 	}
 
-	private void processCurrentQuestionAnswer(String [] args) {
+	private void processCurrentQuestionAnswers(String [] args) {
 		if(args.length == 0) {
 			throw new ShellException("index or indexes of correct answers are required", 2);
 		}
@@ -76,20 +76,24 @@ public class AnswerQuestionCommand implements Function<CommandContext, String> {
 	}
 
 	private Stream<Boolean> getAnswerCorrectnessStream(String[] args, List<Answer> answers) {
-		return Arrays.stream(args)
-				.flatMap( s -> Arrays.stream(s.split(",")))
+		Stream<String> answersStream  = Arrays.stream(args)
+				.flatMap( s -> Arrays.stream(s.split(",")));
+		Stream<Integer> answerIndexesStream = answersStream
 				.map(s -> {
 					try {
-						int idx = Integer.parseInt(s);
+						return Integer.parseInt(s);
+					} catch (NumberFormatException e) {
+						throw new ShellException(String.format(
+								"'%s' not a number, index of answer required", s), 2);
+					}
+				});
+		return answerIndexesStream
+				.map( idx -> {
 						if (idx < 1 || idx > answers.size()) {
 							throw new ShellException(String.format(
 									"no answer with specified index '%s'", idx),2);
 						}
 						return answers.get(idx - 1).isCorrect();
-					} catch(NumberFormatException e) {
-						throw new ShellException(String.format(
-								"not a number '%s' specified as an answer index", s), 2);
-					}
 				});
 	}
 }
