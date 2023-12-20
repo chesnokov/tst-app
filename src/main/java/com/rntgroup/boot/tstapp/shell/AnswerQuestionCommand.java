@@ -91,7 +91,7 @@ public class AnswerQuestionCommand implements Function<CommandContext, String> {
 				.map( idx -> {
 						if (idx < 1 || idx > answers.size()) {
 							throw new ShellException(String.format(
-									"no answer with specified index '%s'", idx),2);
+									"no answer with specified index '%d'", idx),2);
 						}
 						return answers.get(idx - 1).isCorrect();
 				});
