@@ -76,8 +76,10 @@ public class AnswerQuestionCommand implements Function<CommandContext, String> {
 	}
 
 	private Stream<Boolean> getAnswerCorrectnessStream(String[] args, List<Answer> answers) {
+
 		Stream<String> answersStream  = Arrays.stream(args)
 				.flatMap( s -> Arrays.stream(s.split(",")));
+
 		Stream<Integer> answerIndexesStream = answersStream
 				.map(s -> {
 					try {
@@ -87,7 +89,8 @@ public class AnswerQuestionCommand implements Function<CommandContext, String> {
 								"'%s' not a number, index of answer required", s), 2);
 					}
 				});
-		return answerIndexesStream
+
+		return  answerIndexesStream
 				.map( idx -> {
 						if (idx < 1 || idx > answers.size()) {
 							throw new ShellException(String.format(
@@ -95,5 +98,6 @@ public class AnswerQuestionCommand implements Function<CommandContext, String> {
 						}
 						return answers.get(idx - 1).isCorrect();
 				});
+
 	}
 }
