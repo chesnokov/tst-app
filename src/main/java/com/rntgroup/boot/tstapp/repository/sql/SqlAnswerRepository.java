@@ -5,7 +5,6 @@ import com.rntgroup.boot.tstapp.repository.AnswerRepository;
 import com.rntgroup.boot.tstapp.test.Answer;
 import com.rntgroup.boot.tstapp.test.Question;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,8 +15,11 @@ import java.util.List;
 @Repository
 @Setter
 public class SqlAnswerRepository implements AnswerRepository {
-	@Autowired
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+	public SqlAnswerRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+	}
 
 	@Override
 	public List<Answer> findAll() {

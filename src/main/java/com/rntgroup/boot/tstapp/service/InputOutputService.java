@@ -2,6 +2,7 @@ package com.rntgroup.boot.tstapp.service;
 
 import java.util.Optional;
 
+@Deprecated
 public interface InputOutputService {
 	void print(String str);
 	void println(String str);

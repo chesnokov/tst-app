@@ -8,7 +8,6 @@ import com.rntgroup.boot.tstapp.test.Question;
 import com.rntgroup.boot.tstapp.test.UserTest;
 import com.rntgroup.boot.tstapp.test.sql.LazySqlQuestion;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -24,10 +23,15 @@ import java.util.stream.Collectors;
 @Setter
 public class SqlQuestionRepository implements QuestionRepository {
 
-	@Autowired
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	@Autowired
-	private AnswerRepository answerRepository;
+	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private final AnswerRepository answerRepository;
+
+	public SqlQuestionRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+			 AnswerRepository answerRepository) {
+		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+		this.answerRepository = answerRepository;
+	}
+
 
 	@Override
 	public List<Question> findAll() {

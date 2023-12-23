@@ -3,7 +3,6 @@ package com.rntgroup.boot.tstapp.repository.sql;
 import com.rntgroup.boot.tstapp.annotation.BPPBenchmark;
 import com.rntgroup.boot.tstapp.repository.UserTestResultRepository;
 import com.rntgroup.boot.tstapp.test.UserTestResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,8 +15,11 @@ import java.util.List;
 @Repository
 public class SqlUserTestResultRepository implements UserTestResultRepository {
 
-	@Autowired
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+	public SqlUserTestResultRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+	}
 
 	@Override
 	public List<UserTestResult> findAll() {

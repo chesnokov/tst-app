@@ -8,7 +8,7 @@ import java.io.PrintStream;
 import java.util.Optional;
 import java.util.Scanner;
 
-@Service
+@Deprecated
 public class StreamInputOutputService implements InputOutputService {
 	private final PrintStream out;
 	private final InputStream in;

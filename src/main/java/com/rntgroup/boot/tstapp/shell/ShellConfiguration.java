@@ -8,8 +8,7 @@ import org.springframework.shell.command.CommandRegistration;
 public class ShellConfiguration {
 
 	@Bean
-	CommandRegistration showTests(ShowTestsCommand showTestsCommand,
-			ShellExceptionResolver shellExceptionResolver) {
+	CommandRegistration showTests(ShowTestsCommand showTestsCommand) {
 
 		return CommandRegistration.builder()
 				.command("show-tests")
@@ -25,8 +24,7 @@ public class ShellConfiguration {
 
 	@Bean
 	CommandRegistration runTest(RunTestCommand runTestCommand,
-			RunTestAvailability runTestAvailability,
-			ShellExceptionResolver shellExceptionResolver) {
+			RunTestAvailability runTestAvailability) {
 
 		return CommandRegistration.builder()
 				.command("run-test")
@@ -43,8 +41,7 @@ public class ShellConfiguration {
 
 	@Bean
 	CommandRegistration answerQuestion(AnswerQuestionCommand answerQuestionCommand,
-			   AnswerQuestionAvailability answerQuestionAvailability,
-			   ShellExceptionResolver shellExceptionResolver) {
+			   AnswerQuestionAvailability answerQuestionAvailability) {
 
 		return CommandRegistration.builder()
 				.command("answer")

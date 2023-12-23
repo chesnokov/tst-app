@@ -1,11 +1,11 @@
 package com.rntgroup.boot.tstapp.service;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.function.Supplier;
 
-@Component
+@Service
 public class TimestampSupplier implements Supplier<Timestamp> {
 	@Override
 	public Timestamp get() {

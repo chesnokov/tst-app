@@ -15,7 +15,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes={ CompositeUserTestRepository.class})
+@SpringBootTest(classes={ CompositeUserTestRepository.class })
 public class TestCompositeUserTestRepository {
 	@Autowired
 	private CompositeUserTestRepository compositeUserTestRepository;
