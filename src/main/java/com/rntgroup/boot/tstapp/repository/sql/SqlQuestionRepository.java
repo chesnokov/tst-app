@@ -1,6 +1,8 @@
-package com.rntgroup.boot.tstapp.repository;
+package com.rntgroup.boot.tstapp.repository.sql;
 
 import com.rntgroup.boot.tstapp.annotation.BPPBenchmark;
+import com.rntgroup.boot.tstapp.repository.AnswerRepository;
+import com.rntgroup.boot.tstapp.repository.QuestionRepository;
 import com.rntgroup.boot.tstapp.test.Answer;
 import com.rntgroup.boot.tstapp.test.Question;
 import lombok.Setter;

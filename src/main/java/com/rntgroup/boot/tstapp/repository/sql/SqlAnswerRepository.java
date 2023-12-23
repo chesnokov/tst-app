@@ -1,7 +1,7 @@
-package com.rntgroup.boot.tstapp.repository;
+package com.rntgroup.boot.tstapp.repository.sql;
 
-import com.rntgroup.boot.tstapp.annotation.AspectJBenchmark;
 import com.rntgroup.boot.tstapp.annotation.BPPBenchmark;
+import com.rntgroup.boot.tstapp.repository.AnswerRepository;
 import com.rntgroup.boot.tstapp.test.Answer;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;

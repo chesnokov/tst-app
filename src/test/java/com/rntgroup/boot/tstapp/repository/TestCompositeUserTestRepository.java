@@ -1,8 +1,6 @@
 package com.rntgroup.boot.tstapp.repository;
 
-import com.rntgroup.boot.tstapp.proxy.CglibCopyConstructorProxyWrapper;
-import com.rntgroup.boot.tstapp.proxy.PerformanceMonitoringBeanPostProcessor;
-import com.rntgroup.boot.tstapp.application.CommandLineUserTestRunner;
+import com.rntgroup.boot.tstapp.repository.sql.SqlUserTestRepository;
 import com.rntgroup.boot.tstapp.test.UserTest;
 import com.rntgroup.boot.tstapp.util.UserTestUtil;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes={ CompositeUserTestRepository.class, PerformanceMonitoringBeanPostProcessor.class, CglibCopyConstructorProxyWrapper.class})
+@SpringBootTest(classes={ CompositeUserTestRepository.class})
 public class TestCompositeUserTestRepository {
 	@Autowired
 	private CompositeUserTestRepository compositeUserTestRepository;

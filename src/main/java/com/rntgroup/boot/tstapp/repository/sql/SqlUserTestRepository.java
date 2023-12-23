@@ -1,6 +1,8 @@
-package com.rntgroup.boot.tstapp.repository;
+package com.rntgroup.boot.tstapp.repository.sql;
 
 import com.rntgroup.boot.tstapp.annotation.BPPBenchmark;
+import com.rntgroup.boot.tstapp.repository.QuestionRepository;
+import com.rntgroup.boot.tstapp.repository.UserTestRepository;
 import com.rntgroup.boot.tstapp.test.Question;
 import com.rntgroup.boot.tstapp.test.UserTest;
 import lombok.Setter;
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 @BPPBenchmark
 @Repository
 @Setter
-public class SqlUserTestRepository implements  UserTestRepository {
+public class SqlUserTestRepository implements UserTestRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;

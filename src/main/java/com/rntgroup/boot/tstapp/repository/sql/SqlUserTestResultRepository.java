@@ -1,6 +1,7 @@
-package com.rntgroup.boot.tstapp.repository;
+package com.rntgroup.boot.tstapp.repository.sql;
 
 import com.rntgroup.boot.tstapp.annotation.BPPBenchmark;
+import com.rntgroup.boot.tstapp.repository.UserTestResultRepository;
 import com.rntgroup.boot.tstapp.test.UserTestResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
