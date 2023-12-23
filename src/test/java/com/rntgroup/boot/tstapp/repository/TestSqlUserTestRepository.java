@@ -31,4 +31,12 @@ public class TestSqlUserTestRepository {
 		List<UserTest> userTests = userTestRepository.findAll();
 		assertThat(userTests).usingRecursiveComparison().isEqualTo(UserTestUtil.getUserTests());
 	}
+
+	@Test
+	public void shoudReturnLazuSqlUserTestsFromDatabase() {
+		List<UserTest> userTests = userTestRepository.findAllLazy();
+		assertThat(userTests).usingRecursiveComparison()
+				.ignoringFieldsOfTypes(SqlQuestionRepository.class, SqlAnswerRepository.class)
+				.isEqualTo(UserTestUtil.getUserTests());
+	}
 }

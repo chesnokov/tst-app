@@ -46,6 +46,11 @@ public class ExternalUserTestRepository implements UserTestRepository {
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	public List<UserTest> findAllLazy() {
+		return findAll();
+	}
+
 	private UserTest makeUserTest(File file) throws UserTestRepositoryException {
 		try(CSVReader csvReader = new CSVReader(new FileReader(file))) {
 			return userTestReader.makeUserTest(file.toString(),csvReader);

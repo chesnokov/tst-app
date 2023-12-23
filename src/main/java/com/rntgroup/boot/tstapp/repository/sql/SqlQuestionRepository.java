@@ -5,8 +5,11 @@ import com.rntgroup.boot.tstapp.repository.AnswerRepository;
 import com.rntgroup.boot.tstapp.repository.QuestionRepository;
 import com.rntgroup.boot.tstapp.test.Answer;
 import com.rntgroup.boot.tstapp.test.Question;
+import com.rntgroup.boot.tstapp.test.UserTest;
+import com.rntgroup.boot.tstapp.test.sql.LazySqlQuestion;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -36,6 +39,18 @@ public class SqlQuestionRepository implements QuestionRepository {
 							rs.getString("text")));
 
 		return joinQuestionsAndAnswers(questions, answerRepository.findAll());
+	}
+
+	@Override
+	public List<Question> findByUserTestId(UserTest userTest) {
+		return namedParameterJdbcTemplate.query("select qu_id, ex_id, text from question " +
+			"where ex_id = :id order by seq",
+				new BeanPropertySqlParameterSource(userTest),
+			(rs, rowNum) -> new LazySqlQuestion(
+				answerRepository,
+				rs.getString("qu_id"),
+				rs.getString("ex_id"),
+				rs.getString("text")));
 	}
 
 	private List<Question> joinQuestionsAndAnswers(List<Question> questions, List<Answer> answers) {

@@ -24,7 +24,7 @@ public class ShowTestsCommand implements Function<CommandContext, String> {
 
 	@Override
 	public String apply(CommandContext commandContext) {
-		var userTests = compositeUserTestRepository.findAll();
+		var userTests = compositeUserTestRepository.findAllLazy();
 		shellExecutionContext.setUserTests(userTests);
 		return conversionService.convert(userTests, String.class);
 	}

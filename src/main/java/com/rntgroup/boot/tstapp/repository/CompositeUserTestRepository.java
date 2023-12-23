@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @BPPBenchmark
@@ -24,15 +25,20 @@ public class CompositeUserTestRepository implements UserTestRepository {
 		this.repositories = other.repositories;
 	}
 
+	@Override
 	public List<UserTest> findAll()  {
-		anotherMethodToBeLoggedByCglibProxy();
+		return findAll(UserTestRepository::findAll);
+	}
+
+	@Override
+	public List<UserTest> findAllLazy() {
+		return findAll(UserTestRepository::findAllLazy);
+	}
+
+	private List<UserTest> findAll(Function<UserTestRepository,List<UserTest>> mapper) {
 		return repositories.stream()
-				.map(UserTestRepository::findAll)
+				.map(mapper)
 				.flatMap(Collection::stream)
 				.collect(Collectors.toList());
 	}
-
-	public void anotherMethodToBeLoggedByCglibProxy() {
-	}
-
 }

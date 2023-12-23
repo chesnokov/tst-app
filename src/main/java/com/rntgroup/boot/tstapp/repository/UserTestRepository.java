@@ -5,5 +5,6 @@ import java.util.List;
 
 public interface UserTestRepository {
 	List<UserTest> findAll();
+	List<UserTest> findAllLazy();
 }
 

@@ -5,6 +5,7 @@ import com.rntgroup.boot.tstapp.repository.QuestionRepository;
 import com.rntgroup.boot.tstapp.repository.UserTestRepository;
 import com.rntgroup.boot.tstapp.test.Question;
 import com.rntgroup.boot.tstapp.test.UserTest;
+import com.rntgroup.boot.tstapp.test.sql.LazySqlUserTest;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -34,6 +35,14 @@ public class SqlUserTestRepository implements UserTestRepository {
 							rs.getString("name")));
 
 		return joinTestsWithQuestions(userTests, questionRepository.findAll());
+	}
+
+	@Override
+	public List<UserTest> findAllLazy() {
+		return namedParameterJdbcTemplate.query("select ex_id, name from exercise",
+				(rs, rowNum) -> new LazySqlUserTest(questionRepository,
+						rs.getString("ex_id"),
+						rs.getString("name")));
 	}
 
 	private List<UserTest> joinTestsWithQuestions(List<UserTest> userTests, List<Question> questions) {

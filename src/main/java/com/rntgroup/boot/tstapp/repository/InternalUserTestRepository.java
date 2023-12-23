@@ -45,6 +45,11 @@ public class InternalUserTestRepository implements UserTestRepository {
 		return getUserTestsFromFileSystem();
 	}
 
+	@Override
+	public List<UserTest> findAllLazy() {
+		return findAll();
+	}
+
 	private String getJarName() {
 		String resourceDirectory = String.format("/%s",config.getInternalDir());
 		URL resource = InternalUserTestRepository.class.getResource(resourceDirectory);
