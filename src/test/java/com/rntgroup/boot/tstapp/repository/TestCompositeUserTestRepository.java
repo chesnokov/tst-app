@@ -1,5 +1,7 @@
 package com.rntgroup.boot.tstapp.repository;
 
+import com.rntgroup.boot.tstapp.repository.csv.ExternalUserTestRepository;
+import com.rntgroup.boot.tstapp.repository.csv.InternalUserTestRepository;
 import com.rntgroup.boot.tstapp.repository.sql.SqlUserTestRepository;
 import com.rntgroup.boot.tstapp.test.UserTest;
 import com.rntgroup.boot.tstapp.util.UserTestUtil;

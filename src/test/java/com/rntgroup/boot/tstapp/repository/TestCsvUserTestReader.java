@@ -2,6 +2,7 @@ package com.rntgroup.boot.tstapp.repository;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import com.rntgroup.boot.tstapp.repository.csv.CsvUserTestReader;
 import com.rntgroup.boot.tstapp.test.UserTest;
 import com.rntgroup.boot.tstapp.util.UserTestUtil;
 import org.junit.jupiter.api.Test;

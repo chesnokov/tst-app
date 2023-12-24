@@ -1,9 +1,11 @@
-package com.rntgroup.boot.tstapp.repository;
+package com.rntgroup.boot.tstapp.repository.csv;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import com.rntgroup.boot.tstapp.annotation.BPPBenchmark;
-import com.rntgroup.boot.tstapp.repository.config.InternalTestRepositoryConfig;
+import com.rntgroup.boot.tstapp.repository.UserTestRepository;
+import com.rntgroup.boot.tstapp.repository.UserTestRepositoryException;
+import com.rntgroup.boot.tstapp.repository.csv.config.InternalTestRepositoryConfig;
 import com.rntgroup.boot.tstapp.test.UserTest;
 import org.springframework.stereotype.Repository;
 

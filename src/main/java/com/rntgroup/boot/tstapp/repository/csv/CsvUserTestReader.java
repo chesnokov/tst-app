@@ -1,4 +1,4 @@
-package com.rntgroup.boot.tstapp.repository;
+package com.rntgroup.boot.tstapp.repository.csv;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
