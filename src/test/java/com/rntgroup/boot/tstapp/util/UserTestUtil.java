@@ -19,7 +19,7 @@ public class UserTestUtil {
 		answers2.add(new Answer("","Answer2", false));
 		answers2.add(new Answer("","Answer3", false));
 		expectedQuestions.add(new Question("Question2", answers2));
-		return new UserTest("testName", expectedQuestions);
+		return new UserTest("Csv Internal test 1", expectedQuestions);
 	}
 
 	public static List<UserTest> getUserTests() {

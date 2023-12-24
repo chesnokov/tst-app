@@ -101,10 +101,12 @@ public class InternalUserTestRepository implements UserTestRepository {
 		if(inputStream == null) {
 			throw new UserTestRepositoryException(MessageFormat.format("User test file in resource {0} not found", path));
 		}
-		try(InputStream is =  inputStream;
-			InputStreamReader isr = new InputStreamReader(is);
-			CSVReader csvReader = new CSVReader(isr)) {
+		try(var is =  inputStream;
+			var isr = new InputStreamReader(is);
+			var csvReader = new CSVReader(isr)) {
+
 			return userTestReader.makeUserTest(path, csvReader);
+
 		} catch (IOException e) {
 			throw new UserTestRepositoryException(MessageFormat.format("Error reading user test file from internal resource {0}", path), e);
 		} catch (CsvValidationException e) {

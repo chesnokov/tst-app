@@ -61,7 +61,7 @@ class TestUserTestRunner {
 		runner.run();
 
 		verify(userTestResultService, times(1))
-				.processResult(new UserTestResult("testName",
+				.processResult(new UserTestResult("Csv Internal test 1",
 						2, 2, timestampSupplier.get()));
 	}
 
@@ -81,7 +81,7 @@ class TestUserTestRunner {
 		runner.run();
 
 		verify(userTestResultService, times(1))
-				.processResult(new UserTestResult("testName",
+				.processResult(new UserTestResult("Csv Internal test 1",
 						1, 2, timestampSupplier.get()));
 	}
 
