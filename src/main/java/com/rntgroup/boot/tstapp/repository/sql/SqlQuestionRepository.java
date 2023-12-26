@@ -10,6 +10,7 @@ import com.rntgroup.boot.tstapp.test.sql.LazySqlQuestion;
 import lombok.Setter;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -36,10 +37,13 @@ public class SqlQuestionRepository implements QuestionRepository {
 	@Override
 	public List<Question> findAll() {
 		List<Question> questions =
-				namedParameterJdbcTemplate.query( "select qu_id, ex_id, text from question order by ex_id, seq",
+				namedParameterJdbcTemplate.query(
+						"select q.question_id question_id, qs.test_id test_id,  q.text text " +
+								"from question q " +
+								"join user_test_questions qs on qs.question_id = q.question_id",
 					(rs, rowNum) -> new Question(
-							rs.getString("qu_id"),
-							rs.getString("ex_id"),
+							rs.getInt("question_id"),
+							rs.getInt("test_id"),
 							rs.getString("text")));
 
 		return joinQuestionsAndAnswers(questions, answerRepository.findAll());
@@ -47,23 +51,49 @@ public class SqlQuestionRepository implements QuestionRepository {
 
 	@Override
 	public List<Question> findByUserTestId(UserTest userTest) {
-		return namedParameterJdbcTemplate.query("select qu_id, ex_id, text from question " +
-			"where ex_id = :id order by seq",
+		return namedParameterJdbcTemplate.query(
+				"select q.question_id question_id, qs.test_id test_id,  q.text text " +
+						"from question q " +
+						"join user_test_questions qs on qs.question_id = q.question_id " +
+						"where qs.test_id = :id",
 				new BeanPropertySqlParameterSource(userTest),
 			(rs, rowNum) -> new LazySqlQuestion(
 				answerRepository,
-				rs.getString("qu_id"),
-				rs.getString("ex_id"),
+				rs.getInt("question_id"),
+				rs.getInt("test_id"),
 				rs.getString("text")));
 	}
 
+	@Override
+	public Question save(Question question) {
+		GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+
+		namedParameterJdbcTemplate.update("insert into question (text) values(:text)",
+				new BeanPropertySqlParameterSource(question),
+				generatedKeyHolder);
+
+		Integer id = generatedKeyHolder.getKey() != null ? generatedKeyHolder.getKey().intValue() : null;
+		question.setId(id);
+
+		namedParameterJdbcTemplate.update("insert into user_test_questions (test_id, question_id) " +
+				"values(:testId, :id)",
+				new BeanPropertySqlParameterSource(question));
+
+		var answers = question.getAnswers();
+		if(answers != null) {
+			answers.forEach(answerRepository::save);
+		}
+
+		return question;
+	}
+
 	private List<Question> joinQuestionsAndAnswers(List<Question> questions, List<Answer> answers) {
-		Map<String, List<Answer>> answersByQuestionId = groupAnswersByQuestionId(answers);
+		Map<Integer, List<Answer>> answersByQuestionId = groupAnswersByQuestionId(answers);
 		questions.forEach(question -> question.setAnswers(answersByQuestionId.get(question.getId())));
 		return questions;
 	}
 
-	private Map<String, List<Answer>> groupAnswersByQuestionId(List<Answer> answers) {
+	private Map<Integer, List<Answer>> groupAnswersByQuestionId(List<Answer> answers) {
 		return answers.stream().collect(Collectors.groupingBy(Answer::getQuestionId,
 				HashMap::new, Collectors.toCollection(ArrayList::new)));
 	}

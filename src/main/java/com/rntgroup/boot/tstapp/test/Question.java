@@ -9,18 +9,18 @@ import java.util.List;
 @ToString
 @Getter @Setter
 public class Question {
-	private final String id;
-	private final String testId;
+	private Integer id;
+	private Integer testId;
 	private final String text;
 	private List<Answer> answers;
 
-	public Question(String id, String testId, String text) {
+	public Question(Integer id, Integer testId, String text) {
 		this.id = id;
 		this.testId = testId;
 		this.text = text;
 	}
 
-	public Question(String id, String testId, String text, List<Answer> answers) {
+	public Question(Integer id, Integer testId, String text, List<Answer> answers) {
 		this.id = id;
 		this.testId = testId;
 		this.text = text;
@@ -28,10 +28,15 @@ public class Question {
 	}
 
 	public Question(String text, List<Answer> answers) {
-		this.id = "";
-		this.testId = "";
 		this.text = text;
 		this.answers = answers;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+		if(answers != null) {
+			answers.forEach(a -> a.setQuestionId(id));
+		}
 	}
 
 	public long getCorrectAnswersCount() {

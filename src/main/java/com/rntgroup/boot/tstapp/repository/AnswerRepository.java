@@ -8,4 +8,5 @@ import java.util.List;
 public interface AnswerRepository {
 	List<Answer> findAll();
 	List<Answer> findByQuestionId(Question question);
+	Answer save(Answer answer);
 }

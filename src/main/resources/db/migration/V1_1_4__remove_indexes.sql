@@ -1,0 +1,2 @@
+drop index question_exercise_index;
+drop index answer_question_index;

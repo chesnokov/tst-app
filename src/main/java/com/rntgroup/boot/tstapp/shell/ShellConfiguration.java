@@ -55,4 +55,17 @@ public class ShellConfiguration {
 				.and()
 				.build();
 	}
+
+	@Bean
+	CommandRegistration importTest(ImportTestCommand importTestCommand) {
+
+		return CommandRegistration.builder()
+				.command("i")
+				.description("<fileName> import test from csv to database")
+				.withTarget()
+				.function(importTestCommand)
+				.and()
+				.build();
+	}
+
 }

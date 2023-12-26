@@ -12,24 +12,24 @@ import java.sql.Timestamp;
 @ToString
 public class UserTestResult {
 	private final String testName;
-	private final int correctAnswers;
-	private final int answersCount;
+	private final int correctAnswersCount;
+	private final int questionsCount;
 	private final Timestamp timestamp;
 	private long id;
 
-	public UserTestResult(String testName, int correctAnswers, int answersCount, Timestamp timestamp) {
+	public UserTestResult(String testName, int correctAnswersCount, int questionsCount, Timestamp timestamp) {
 		this.testName = testName;
-		this.correctAnswers = correctAnswers;
-		this.answersCount = answersCount;
+		this.correctAnswersCount = correctAnswersCount;
+		this.questionsCount = questionsCount;
 		this.timestamp = timestamp;
 	}
 
-	public UserTestResult(long id, String testName, int correctAnswers,
-						  int answersCount, Timestamp timestamp) {
+	public UserTestResult(long id, String testName, int correctAnswersCount,
+						  int questionsCount, Timestamp timestamp) {
 		this.id = id;
 		this.testName = testName;
-		this.correctAnswers = correctAnswers;
-		this.answersCount = answersCount;
+		this.correctAnswersCount = correctAnswersCount;
+		this.questionsCount = questionsCount;
 		this.timestamp = timestamp;
 	}
 }

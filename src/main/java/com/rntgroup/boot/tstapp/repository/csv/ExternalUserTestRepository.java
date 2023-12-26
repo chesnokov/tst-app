@@ -53,6 +53,11 @@ public class ExternalUserTestRepository implements UserTestRepository {
 		return findAll();
 	}
 
+	@Override
+	public UserTest save(UserTest userTest) {
+		throw new UnsupportedOperationException("Operation save is not supported for ExternalUserTestRepository");
+	}
+
 	private UserTest makeUserTest(File file) throws UserTestRepositoryException {
 		try(var fileReader = new FileReader(file);
 			var csvReader = new CSVReader(fileReader)) {

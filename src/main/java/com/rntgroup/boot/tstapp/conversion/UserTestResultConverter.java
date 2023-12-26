@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 public class UserTestResultConverter implements Converter<UserTestResult, String> {
 	@Override
 	public String convert(UserTestResult result) {
-		return String.format("Result: %s of %d", result.getCorrectAnswers(), result.getAnswersCount());
+		return String.format("Result: %s of %d", result.getCorrectAnswersCount(), result.getQuestionsCount());
 	}
 }

@@ -1,3 +1,8 @@
+drop table result;
+drop table answer;
+drop table question;
+drop table exercise;
+
 create table if not exists user_test (
     test_id int auto_increment primary key,
     name varchar(512) not null

@@ -52,6 +52,12 @@ public class InternalUserTestRepository implements UserTestRepository {
 		return findAll();
 	}
 
+	@Override
+	public UserTest save(UserTest userTest) {
+		throw new UnsupportedOperationException("Operation save is not supported for InternalUserTestRepository");
+	}
+
+
 	private String getJarName() {
 		String resourceDirectory = String.format("/%s",config.getInternalDir());
 		URL resource = InternalUserTestRepository.class.getResource(resourceDirectory);

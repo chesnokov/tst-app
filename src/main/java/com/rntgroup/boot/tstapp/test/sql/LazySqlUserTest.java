@@ -10,7 +10,7 @@ public class LazySqlUserTest extends UserTest {
 
 	private final QuestionRepository questionRepository;
 
-	public LazySqlUserTest(QuestionRepository questionRepository, String id, String name) {
+	public LazySqlUserTest(QuestionRepository questionRepository, Integer id, String name) {
 		super(id, name);
 		this.questionRepository = questionRepository;
 	}

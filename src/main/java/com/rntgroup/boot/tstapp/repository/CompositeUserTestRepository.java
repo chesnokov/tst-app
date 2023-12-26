@@ -35,6 +35,11 @@ public class CompositeUserTestRepository implements UserTestRepository {
 		return findAll(UserTestRepository::findAllLazy);
 	}
 
+	@Override
+	public UserTest save(UserTest userTest) {
+		throw new UnsupportedOperationException("Operation save() not supported on CompositeUserTestRepository");
+	}
+
 	private List<UserTest> findAll(Function<UserTestRepository,List<UserTest>> mapper) {
 		return repositories.stream()
 				.map(mapper)

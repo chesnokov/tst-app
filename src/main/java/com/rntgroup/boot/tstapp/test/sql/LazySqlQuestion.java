@@ -9,7 +9,7 @@ import java.util.List;
 public class LazySqlQuestion extends Question {
 	private final AnswerRepository answerRepository;
 
-	public LazySqlQuestion(AnswerRepository answerRepository, String id, String testId, String text) {
+	public LazySqlQuestion(AnswerRepository answerRepository, Integer id, Integer testId, String text) {
 		super(id, testId, text);
 		this.answerRepository = answerRepository;
 	}

@@ -18,7 +18,7 @@ public class QuestionFromStringsConverter implements Converter<String [], Questi
 	private List<Answer> convertAnswers(String[] source) {
 		List<Answer> answers = new ArrayList<>();
 		for(int i = 1; i < source.length - 1; i += 2) {
-			var answer = new Answer("", source[i], source[i+1].trim().equals("true"));
+			var answer = new Answer(null, source[i], source[i+1].trim().equals("true"));
 			answers.add(answer);
 		}
 		return answers;

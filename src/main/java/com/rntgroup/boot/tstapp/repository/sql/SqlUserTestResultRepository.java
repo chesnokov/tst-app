@@ -23,12 +23,14 @@ public class SqlUserTestResultRepository implements UserTestResultRepository {
 
 	@Override
 	public List<UserTestResult> findAll() {
-		return namedParameterJdbcTemplate.query("select re_id, ex_name, correct_count, ans_count, date_time from result",
+		return namedParameterJdbcTemplate.query(
+				"select result_id, user_test_name, correct_answer_count, question_count, date_time " +
+						"from result",
 				(rs, rowNum)->
-				new UserTestResult(rs.getLong("re_id"),
-						rs.getString("ex_name"),
-						rs.getInt("correct_count"),
-						rs.getInt("ans_count"),
+				new UserTestResult(rs.getLong("result_id"),
+						rs.getString("user_test_name"),
+						rs.getInt("correct_answer_count"),
+						rs.getInt("question_count"),
 						rs.getTimestamp("date_time")));
 	}
 
@@ -37,8 +39,8 @@ public class SqlUserTestResultRepository implements UserTestResultRepository {
 	public UserTestResult save(UserTestResult result) {
 		GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
 
-		namedParameterJdbcTemplate.update("insert into result (ex_name, correct_count, ans_count, date_time) " +
-						"values(:testName, :correctAnswers, :answersCount, :timestamp)",
+		namedParameterJdbcTemplate.update("insert into result (user_test_name, question_count, correct_answer_count, date_time) " +
+						"values(:testName,  :questionsCount, :correctAnswersCount, :timestamp)",
 				new BeanPropertySqlParameterSource(result), generatedKeyHolder);
 
 		long resultId = generatedKeyHolder.getKey() != null ? generatedKeyHolder.getKey().longValue() : 0;

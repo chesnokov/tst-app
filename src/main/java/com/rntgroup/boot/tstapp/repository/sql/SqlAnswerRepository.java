@@ -7,6 +7,7 @@ import com.rntgroup.boot.tstapp.test.Question;
 import lombok.Setter;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,21 +24,48 @@ public class SqlAnswerRepository implements AnswerRepository {
 
 	@Override
 	public List<Answer> findAll() {
-		return namedParameterJdbcTemplate.query("select qu_id, text, is_correct from answer order by qu_id, seq",
+		return namedParameterJdbcTemplate.query(
+				"select qa.question_id question_id, a.text text, a.is_correct is_correct " +
+						"from answer a " +
+						"join question_answers qa on qa.answer_id = a.answer_id",
 						(rs, rowNum) -> new Answer(
-								rs.getString("qu_id"),
+								rs.getInt("question_id"),
 								rs.getString("text"),
 								rs.getBoolean("is_correct")));
 	}
 
 	@Override
 	public List<Answer> findByQuestionId(Question question) {
-		return namedParameterJdbcTemplate.query("select qu_id, text, is_correct from answer " +
-				"where qu_id = :id order by seq",
+		return namedParameterJdbcTemplate.query(
+				"select qa.question_id question_id, a.text text, a.is_correct is_correct " +
+						"from answer a " +
+						"join question_answers qa on qa.answer_id = a.answer_id " +
+						"where question_id = :id",
 				new BeanPropertySqlParameterSource(question),
 				(rs, rowNum) -> new Answer(
-						rs.getString("qu_id"),
+						rs.getInt("question_id"),
 						rs.getString("text"),
 						rs.getBoolean("is_correct")));
+	}
+
+	@Override
+	public Answer save(Answer answer) {
+		GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+
+		namedParameterJdbcTemplate.update(
+				"insert into answer (text, is_correct) " +
+						"values(:text, :correct)",
+				new BeanPropertySqlParameterSource(answer),
+				generatedKeyHolder);
+
+
+		Integer id = generatedKeyHolder.getKey() != null ? generatedKeyHolder.getKey().intValue() : null;
+		answer.setId(id);
+
+		namedParameterJdbcTemplate.update("insert into question_answers (question_id, answer_id) " +
+						"values(:questionId, :id)",
+				new BeanPropertySqlParameterSource(answer));
+
+		return answer;
 	}
 }
